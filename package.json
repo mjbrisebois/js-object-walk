@@ -1,0 +1,25 @@
+{
+  "name": "@whi/object-walk",
+  "version": "0.1.0",
+  "description": "A method for traversing an object and optionally replacing values",
+  "main": "src/index.js",
+  "files": [
+    "README.md",
+    "src/index.js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthew Brisebois <matthew@webheroes.ca>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjbrisebois/js-object-walk/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@whi/stdlog": "^0.3.4",
+    "chai": "^4.3.4",
+    "mocha": "^9.0.0"
+  }
+}
