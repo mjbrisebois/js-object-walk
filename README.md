@@ -4,9 +4,9 @@
 This module is intended to help with recursively traversing an object and optionally replacing
 values.
 
-[![](https://img.shields.io/github/issues-raw/mjbrisebois/js-walk-object?style=flat-square)](https://github.com/mjbrisebois/js-walk-object/issues)
-[![](https://img.shields.io/github/issues-closed-raw/mjbrisebois/js-walk-object?style=flat-square)](https://github.com/mjbrisebois/js-walk-object/issues?q=is%3Aissue+is%3Aclosed)
-[![](https://img.shields.io/github/issues-pr-raw/mjbrisebois/js-walk-object?style=flat-square)](https://github.com/mjbrisebois/js-walk-object/pulls)
+[![](https://img.shields.io/github/issues-raw/mjbrisebois/js-object-walk?style=flat-square)](https://github.com/mjbrisebois/js-object-walk/issues)
+[![](https://img.shields.io/github/issues-closed-raw/mjbrisebois/js-object-walk?style=flat-square)](https://github.com/mjbrisebois/js-object-walk/issues?q=is%3Aissue+is%3Aclosed)
+[![](https://img.shields.io/github/issues-pr-raw/mjbrisebois/js-object-walk?style=flat-square)](https://github.com/mjbrisebois/js-object-walk/pulls)
 
 
 ## Overview
