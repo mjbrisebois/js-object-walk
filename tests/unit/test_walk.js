@@ -59,6 +59,15 @@ function basic_tests () {
 
 	expect( keys			).to.deep.equal([ "fruit", "oranges", "bananas", "apples", "candy", "type", "name", "bytes", "type", "data" ]);
     });
+
+    it("should replace base", async () => {
+	let text			= Object.walk( Buffer.from("Hello"), function (key, value) {
+	    let hexstr			= value.toString('hex').match(/.{2}/g).join(" ");
+	    return `<Buffer ${hexstr}>`;
+	});
+
+	expect( text			).to.equal("<Buffer 48 65 6c 6c 6f>");
+    });
 }
 
 describe("Debug", () => {

@@ -2,17 +2,21 @@
 let debug				= false;
 
 function run_replacer ( obj, key, replacer ) {
+    let value				= key === undefined // This must be the top parent element
+	? obj : obj[key];
+
     if ( replacer === undefined )
-	return; // Because there's nothing to be done
+	return value; // Because there's nothing to be done
 
     if ( typeof replacer !== "function" )
 	throw new Error(`Replacer must be a function; not type '${typeof replacer}'`);
 
     if ( typeof key === "string" || typeof key === "number" ) {
-	obj[key]		= replacer.call(obj, key, obj[key] );
+	obj[key]			= replacer.call(obj, key, value );
+	return obj[key];
     }
     else if ( key === undefined ) // This must be the top parent element
-	return;
+	return replacer.call(obj, null, value );
     else
 	throw new Error(`Unknown key type: ${typeof key}`);
 }
@@ -20,10 +24,8 @@ function run_replacer ( obj, key, replacer ) {
 // TODO: default to undefined replacer result meaning no replacement, use Symbol for remove
 // TODO: an option for width first instead of depth first?
 function walk ( parent, replacer, key, depth = 0 ) {
-    run_replacer( parent, key, replacer );
-
     // If key is undefined than the 'parent' is actually the object we want to start with.
-    let value				= key === undefined ? parent : parent[key];
+    let value				= run_replacer( parent, key, replacer )
 
     if ( typeof value !== "object" || value === null ) {
 	debug && console.log("Value is not an object:", value );
