@@ -4,10 +4,10 @@ const log				= require('@whi/stdlog')(path.basename( __filename ), {
 });
 
 const expect				= require('chai').expect;
-const { walk, debug }			= require('../../src/index.js').bindNative();
+const { walk, logging }			= require('../../src/index.js').bindNative();
 
 if ( process.env.LOG_LEVEL )
-    debug();
+    logging();
 
 
 function basic_tests () {

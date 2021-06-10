@@ -11,13 +11,13 @@ simply as possible.
 
 See [docs/API.md](docs/API.md) for detailed API References
 
-### `debug()`
+### `logging()`
 Turns on debugging logs.
 
 ```javascript
-const { walk, debug } = require('@whi/object-walk').bindNative();
+const { walk, logging } = require('@whi/object-walk').bindNative();
 
-debug(); // show debug logs
+logging(); // show debug logs
 ```
 
 ### Environment

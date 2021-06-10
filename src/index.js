@@ -1,6 +1,11 @@
 
 let debug				= false;
 
+function log ( msg, ...args ) {
+    let datetime			= (new Date()).toISOString();
+    console.log(`${datetime} [ src/index. ]  INFO: ${msg}`, ...args );
+}
+
 function run_replacer ( obj, key, replacer ) {
     let value				= key === undefined // This must be the top parent element
 	? obj : obj[key];
@@ -28,21 +33,21 @@ function walk ( parent, replacer, key, depth = 0 ) {
     let value				= run_replacer( parent, key, replacer )
 
     if ( typeof value !== "object" || value === null ) {
-	debug && console.log("Value is not an object:", value );
+	debug && log("Value is not an object:", value );
 	return value;
     }
 
-    debug && console.log("Walking depth", depth );
+    debug && log("Walking depth", depth );
     if ( Array.isArray(value) ) {
-	debug && console.log("Walking array with length:", value.length, value );
+	debug && log("Walking array with length:", value.length, value );
 	for (let i=0; i < value.length; i++) {
 	    value[i]			= walk( value, replacer, i, depth+1 );
 	}
     }
     else {
-	debug && console.log("Walking object:", value );
+	debug && log("Walking object:", value );
 	for (let key of Object.keys(value) ) {
-	    debug && console.log("Walk sub-object for key:", key );
+	    debug && log("Walk sub-object for key:", key );
 	    value[key]			= walk( value, replacer, key, depth+1 );
 	}
     }
@@ -56,7 +61,7 @@ function walk ( parent, replacer, key, depth = 0 ) {
 
 let base_exports = {
     walk,
-    debug () {
+    logging () {
 	debug				= true;
     },
 };
