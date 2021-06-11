@@ -68,6 +68,17 @@ function basic_tests () {
 
 	expect( text			).to.equal("<Buffer 48 65 6c 6c 6f>");
     });
+
+    it("should collect all paths", async () => {
+	let paths			= [];
+	let json			= Object.walk( input, function (key, value, path) {
+	    paths.push( path.join(".") );
+	    return value;
+	});
+
+	expect( paths			).to.have.length( 20 );
+	expect( paths.pop()		).to.equal("0.candy.3.bytes.data.3");
+    });
 }
 
 describe("Debug", () => {

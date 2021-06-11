@@ -6,7 +6,7 @@ function log ( msg, ...args ) {
     console.log(`${datetime} [ src/index. ]  INFO: ${msg}`, ...args );
 }
 
-function run_replacer ( obj, key, replacer ) {
+function run_replacer ( obj, key, path, replacer ) {
     let value				= key === undefined // This must be the top parent element
 	? obj : obj[key];
 
@@ -17,38 +17,52 @@ function run_replacer ( obj, key, replacer ) {
 	throw new Error(`Replacer must be a function; not type '${typeof replacer}'`);
 
     if ( typeof key === "string" || typeof key === "number" ) {
-	obj[key]			= replacer.call(obj, key, value );
+	obj[key]			= replacer.call(obj, key, value, path.slice() );
 	return obj[key];
     }
     else if ( key === undefined ) // This must be the top parent element
-	return replacer.call(obj, null, value );
+	return replacer.call(obj, null, value, path.slice() );
     else
 	throw new Error(`Unknown key type: ${typeof key}`);
 }
 
 // TODO: default to undefined replacer result meaning no replacement, use Symbol for remove
 // TODO: an option for width first instead of depth first?
-function walk ( parent, replacer, key, depth = 0 ) {
+function walk ( parent, replacer, key, path ) {
+    if ( path === undefined )
+	path				= [];
+
+    if ( key !== undefined ) {
+	debug && log(`Extending path (${path.length}) with:`, key, path );
+	path.push( String(key) );
+    }
+
     // If key is undefined than the 'parent' is actually the object we want to start with.
-    let value				= run_replacer( parent, key, replacer )
+    let value				= run_replacer( parent, key, path, replacer )
 
     if ( typeof value !== "object" || value === null ) {
 	debug && log("Value is not an object:", value );
 	return value;
     }
 
-    debug && log("Walking depth", depth );
+    debug && log("Walking depth", path.length, path );
     if ( Array.isArray(value) ) {
-	debug && log("Walking array with length:", value.length, value );
+	debug && log("Walking array with length:", value.length, key );
 	for (let i=0; i < value.length; i++) {
-	    value[i]			= walk( value, replacer, i, depth+1 );
+	    value[i]			= walk( value, replacer, i, path );
+
+	    debug && log(`Removing path segment (${path.length-1}):`, path[path.length-1] );
+	    path.pop();
 	}
     }
     else {
 	debug && log("Walking object:", value );
 	for (let key of Object.keys(value) ) {
 	    debug && log("Walk sub-object for key:", key );
-	    value[key]			= walk( value, replacer, key, depth+1 );
+	    value[key]			= walk( value, replacer, key, path );
+
+	    debug && log(`Removing path segment (${path.length-1}):`, path[path.length-1] );
+	    path.pop();
 	}
     }
 
@@ -72,9 +86,7 @@ module.exports = {
 	    throw new Error(`Object.walk is already defined as type: ${typeof Object.walk}`);
 
 	Object.defineProperty(Object, "walk", {
-	    "value": function ( ...args ) {
-		return walk( ...args );
-	    },
+	    "value": walk,
 	    "writable": false,
 	});
 
