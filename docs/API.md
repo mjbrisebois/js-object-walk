@@ -15,16 +15,25 @@ const { walk } = require('@whi/object-walk').bindNative();
 Iterate over an object's properties and recursively iterate all child objects.  Calls replacer for
 every key/value pair.
 
-### Argument: `replacer( key, value )`
+### Argument: `replacer( key, value, path )`
 The `replacer` callback is given the parent's key and the current value.  `this` is set to the
 parent object in-case you need access to it (ergo `this[key] == value`).
 
-Example of collecting all object keys.
+Example of collecting all object keys
 ```javascript
 let keys = [];
 Object.walk( input, function (key, value) {
     if ( typeof key === "string" )
         keys.push( key );
+    return value;
+});
+```
+
+Example of collecting all node paths
+```javascript
+let paths = [];
+Object.walk( input, function (key, value, path) {
+    paths.push( path.join('.') );
     return value;
 });
 ```
