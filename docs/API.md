@@ -19,6 +19,9 @@ every key/value pair.
 The `replacer` callback is given the parent's key and the current value.  `this` is set to the
 parent object in-case you need access to it (ergo `this[key] == value`).
 
+- If replacer returns `undefined` the value will be deleted
+- If replacer returns the same value (checked using `===`) it will do nothing
+
 Example of collecting all object keys
 ```javascript
 let keys = [];

@@ -16,17 +16,14 @@ function run_replacer ( obj, key, path, replacer ) {
     if ( typeof replacer !== "function" )
 	throw new Error(`Replacer must be a function; not type '${typeof replacer}'`);
 
-    if ( typeof key === "string" || typeof key === "number" ) {
-	obj[key]			= replacer.call(obj, key, value, path.slice() );
-	return obj[key];
-    }
-    else if ( key === undefined ) // This must be the top parent element
+    if ( key === undefined ) // This must be the top parent element
 	return replacer.call(obj, null, value, path.slice() );
+    else if ( typeof key === "string" || typeof key === "number" )
+	return replacer.call(obj, key, value, path.slice() );
     else
 	throw new Error(`Unknown key type: ${typeof key}`);
 }
 
-// TODO: default to undefined replacer result meaning no replacement, use Symbol for remove
 // TODO: an option for width first instead of depth first?
 function walk ( parent, replacer, key, path ) {
     if ( path === undefined )
@@ -49,7 +46,14 @@ function walk ( parent, replacer, key, path ) {
     if ( Array.isArray(value) ) {
 	debug && log("Walking array with length:", value.length, key );
 	for (let i=0; i < value.length; i++) {
-	    value[i]			= walk( value, replacer, i, path );
+	    const new_value		= walk( value, replacer, i, path );
+
+	    if ( new_value === undefined ) {
+		value.splice(i, 1);
+		i--;
+	    }
+	    else if ( new_value !== value[i] )
+		value[i]		= new_value;
 
 	    debug && log(`Removing path segment (${path.length-1}):`, path[path.length-1] );
 	    path.pop();
@@ -59,7 +63,12 @@ function walk ( parent, replacer, key, path ) {
 	debug && log("Walking object:", value );
 	for (let key of Object.keys(value) ) {
 	    debug && log("Walk sub-object for key:", key );
-	    value[key]			= walk( value, replacer, key, path );
+	    const new_value		= walk( value, replacer, key, path );
+
+	    if ( new_value === undefined )
+		delete value[key];
+	    else if ( new_value !== value[key] )
+		value[key]		= new_value;
 
 	    debug && log(`Removing path segment (${path.length-1}):`, path[path.length-1] );
 	    path.pop();

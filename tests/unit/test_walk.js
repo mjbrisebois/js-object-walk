@@ -10,8 +10,8 @@ if ( process.env.LOG_LEVEL )
     logging();
 
 
-function basic_tests () {
-    let input				= [{
+function createInput () {
+    return [{
 	"fruit": {
 	    "oranges": 10,
 	    "bananas": 4,
@@ -28,6 +28,10 @@ function basic_tests () {
 	    }
 	],
     }];
+}
+
+function basic_tests () {
+    let input				= createInput();
 
     it("should collect all keys", async () => {
 	let keys			= [];
@@ -78,6 +82,15 @@ function basic_tests () {
 
 	expect( paths			).to.have.length( 20 );
 	expect( paths.pop()		).to.equal("0.candy.3.bytes.data.3");
+    });
+
+    it("should remove ArrayBuffer views", async () => {
+	input				= createInput();
+	let result			= Object.walk( input, function (key, value) {
+	    return ArrayBuffer.isView( value ) ? undefined : value;
+	});
+
+	expect( JSON.stringify(result)	).to.equal(`[{"fruit":{"oranges":10,"bananas":4,"apples":11},"candy":[99,33,66,{"type":"Tank","name":"Boomer"}]}]`);
     });
 }
 
