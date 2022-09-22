@@ -1,6 +1,6 @@
 {
   "name": "@whi/object-walk",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "A method for traversing an object and optionally replacing values",
   "main": "src/index.js",
   "files": [
@@ -20,6 +20,6 @@
   "devDependencies": {
     "@whi/stdlog": "^0.3.4",
     "chai": "^4.3.4",
-    "mocha": "^9.0.0"
+    "mocha": "^10.0.0"
   }
 }
