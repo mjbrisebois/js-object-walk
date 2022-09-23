@@ -1,4 +1,5 @@
 
+const DELETE				= Symbol();
 let debug				= false;
 
 function log ( msg, ...args ) {
@@ -48,7 +49,7 @@ function walk ( parent, replacer, key, path ) {
 	for (let i=0; i < value.length; i++) {
 	    const new_value		= walk( value, replacer, i, path );
 
-	    if ( new_value === undefined ) {
+	    if ( new_value === DELETE ) {
 		value.splice(i, 1);
 		i--;
 	    }
@@ -65,7 +66,7 @@ function walk ( parent, replacer, key, path ) {
 	    debug && log("Walk sub-object for key:", key );
 	    const new_value		= walk( value, replacer, key, path );
 
-	    if ( new_value === undefined )
+	    if ( new_value === DELETE )
 		delete value[key];
 	    else if ( new_value !== value[key] )
 		value[key]		= new_value;
@@ -84,6 +85,7 @@ function walk ( parent, replacer, key, path ) {
 
 let base_exports = {
     walk,
+    DELETE,
     logging () {
 	debug				= true;
     },

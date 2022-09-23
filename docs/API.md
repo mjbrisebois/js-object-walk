@@ -8,7 +8,7 @@ this can be called on the same line as `require`.
 
 Example
 ```javascript
-const { walk } = require('@whi/object-walk').bindNative();
+const { walk, DELETE } = require('@whi/object-walk').bindNative();
 ```
 
 ## `walk( obj, replacer )`
@@ -19,7 +19,7 @@ every key/value pair.
 The `replacer` callback is given the parent's key and the current value.  `this` is set to the
 parent object in-case you need access to it (ergo `this[key] == value`).
 
-- If replacer returns `undefined` the value will be deleted
+- If replacer returns the `DELETE` symbol the value will be deleted
 - If replacer returns the same value (checked using `===`) it will do nothing
 
 Example of collecting all object keys

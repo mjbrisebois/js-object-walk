@@ -4,7 +4,7 @@ const log				= require('@whi/stdlog')(path.basename( __filename ), {
 });
 
 const expect				= require('chai').expect;
-const { walk, logging }			= require('../../src/index.js').bindNative();
+const { walk, logging, DELETE }		= require('../../src/index.js').bindNative();
 
 if ( process.env.LOG_LEVEL )
     logging();
@@ -87,10 +87,21 @@ function basic_tests () {
     it("should remove ArrayBuffer views", async () => {
 	input				= createInput();
 	let result			= Object.walk( input, function (key, value) {
-	    return ArrayBuffer.isView( value ) ? undefined : value;
+	    return ArrayBuffer.isView( value ) ? DELETE : value;
 	});
 
 	expect( JSON.stringify(result)	).to.equal(`[{"fruit":{"oranges":10,"bananas":4,"apples":11},"candy":[99,33,66,{"type":"Tank","name":"Boomer"}]}]`);
+    });
+
+    it("should do nothing on an undefined value", async () => {
+	let input			= {
+	    "something": undefined,
+	};
+	let result			= Object.walk( input, function (key, value) {
+	    return value;
+	});
+
+	expect( JSON.stringify(result)	).to.equal(`{}`);
     });
 }
 
