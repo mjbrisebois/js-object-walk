@@ -1,3 +1,10 @@
+export type ReplacerFunction = (
+    this: any,
+    key?: string | number | null,
+    value?: any,
+    path?: string[]
+) => any;
+
 export const DELETE = Symbol();
 let debug = false;
 
@@ -6,9 +13,14 @@ function log(msg: any, ...args: any[]) {
     console.log(`${datetime} [ src/index. ]  INFO: ${msg}`, ...args);
 }
 
-function run_replacer(obj: any, key: any, path: any, replacer: any) {
+function run_replacer(
+    obj: any,
+    key: string | number | null,
+    path: string[],
+    replacer?: ReplacerFunction
+) {
     let value =
-        key === undefined // This must be the top parent element
+        key === null // This must be the top parent element
             ? obj
             : obj[key];
 
@@ -17,7 +29,7 @@ function run_replacer(obj: any, key: any, path: any, replacer: any) {
     if (typeof replacer !== 'function')
         throw new Error(`Replacer must be a function; not type '${typeof replacer}'`);
 
-    if (key === undefined)
+    if (key === null)
         // This must be the top parent element
         return replacer.call(obj, null, value, path.slice());
     else if (typeof key === 'string' || typeof key === 'number')
@@ -26,7 +38,12 @@ function run_replacer(obj: any, key: any, path: any, replacer: any) {
 }
 
 // TODO: an option for width first instead of depth first?
-export function walk(parent: any, replacer: any, key: any, path: any) {
+export function walk(
+    parent: any,
+    replacer: ReplacerFunction,
+    key?: string | number,
+    path?: string[]
+) {
     if (path === undefined) path = [];
 
     if (key !== undefined) {
@@ -35,7 +52,7 @@ export function walk(parent: any, replacer: any, key: any, path: any) {
     }
 
     // If key is undefined than the 'parent' is actually the object we want to start with.
-    let value = run_replacer(parent, key, path, replacer);
+    let value = run_replacer(parent, key ?? null, path, replacer);
 
     if (typeof value !== 'object' || value === null) {
         debug && log('Value is not an object:', value);
