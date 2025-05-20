@@ -2,13 +2,18 @@
   "name": "@whi/object-walk",
   "version": "0.3.0",
   "description": "A method for traversing an object and optionally replacing values",
-  "main": "src/index.js",
+  "main": "src/index.ts",
+  "module": "lib/index.js",
+  "type": "module",
   "files": [
     "README.md",
-    "src/index.js"
+    "src/*.ts",
+    "lib/*.js",
+    "lib/*.d.ts",
+    "lib/*.js.map"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --write \"tests/**/*.ts\" \"src/**/*.ts\""
   },
   "author": "Matthew Brisebois <matthew@webheroes.ca>",
   "license": "ISC",
@@ -16,10 +21,11 @@
     "type": "git",
     "url": "https://github.com/mjbrisebois/js-object-walk/"
   },
-  "dependencies": {},
   "devDependencies": {
     "@whi/stdlog": "^0.3.4",
     "chai": "^4.3.4",
-    "mocha": "^10.0.0"
+    "mocha": "^10.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
   }
 }

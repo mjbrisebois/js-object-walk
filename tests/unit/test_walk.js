@@ -1,10 +1,13 @@
-const path				= require('path');
-const log				= require('@whi/stdlog')(path.basename( __filename ), {
+import path				from 'path';
+import logger				from '@whi/stdlog';
+import { expect }			from 'chai';
+import { logging, DELETE, bindNative }	from '../../lib/index.js';
+
+bindNative();
+
+const log					= logger(path.basename( import.meta.url ), {
     level: process.env.LOG_LEVEL || 'fatal',
 });
-
-const expect				= require('chai').expect;
-const { walk, logging, DELETE }		= require('../../src/index.js').bindNative();
 
 if ( process.env.LOG_LEVEL )
     logging();

@@ -36,8 +36,8 @@ npm i @whi/object-walk
 
 ## Usage
 
-```javascript
-const { walk } = require('@whi/object-walk');
+```typescript
+import { walk } from '@whi/object-walk';
 
 walk( some_obj, function ( key, value ) {
     return value;
@@ -46,8 +46,9 @@ walk( some_obj, function ( key, value ) {
 
 Alternatively, attach `walk` to the native `Object` as a method.
 
-```javascript
-require('@whi/object-walk').bindNative();
+```typescript
+import { bindNative } from '@whi/object-walk';
+bindNative();
 
 Object.walk( some_obj, function ( key, value ) {
     return value;

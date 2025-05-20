@@ -14,8 +14,8 @@ See [docs/API.md](docs/API.md) for detailed API References
 ### `logging()`
 Turns on debugging logs.
 
-```javascript
-const { walk, logging } = require('@whi/object-walk').bindNative();
+```typescript
+import { walk, logging } from '@whi/object-walk';
 
 logging(); // show debug logs
 ```

@@ -7,8 +7,9 @@ Attempts to define `walk` on the native `Object` properties.  Returns the module
 this can be called on the same line as `require`.
 
 Example
-```javascript
-const { walk, DELETE } = require('@whi/object-walk').bindNative();
+```typescript
+import { walk, DELETE, bindNative } from '@whi/object-walk';
+bindNative();
 ```
 
 ## `walk( obj, replacer )`
@@ -23,9 +24,9 @@ parent object in-case you need access to it (ergo `this[key] == value`).
 - If replacer returns the same value (checked using `===`) it will do nothing
 
 Example of collecting all object keys
-```javascript
+```typescript
 let keys = [];
-Object.walk( input, function (key, value) {
+Object.walk( input, function (key: string, value: any) {
     if ( typeof key === "string" )
         keys.push( key );
     return value;
@@ -33,9 +34,9 @@ Object.walk( input, function (key, value) {
 ```
 
 Example of collecting all node paths
-```javascript
+```typescript
 let paths = [];
-Object.walk( input, function (key, value, path) {
+Object.walk( input, function (key: string, value: any, path: string[]) {
     paths.push( path.join('.') );
     return value;
 });

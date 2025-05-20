@@ -1,13 +1,13 @@
 
-const DELETE				= Symbol();
+export const DELETE			= Symbol();
 let debug				= false;
 
-function log ( msg, ...args ) {
+function log ( msg: any, ...args: any[] ) {
     let datetime			= (new Date()).toISOString();
     console.log(`${datetime} [ src/index. ]  INFO: ${msg}`, ...args );
 }
 
-function run_replacer ( obj, key, path, replacer ) {
+function run_replacer ( obj: any, key: any, path: any, replacer: any ) {
     let value				= key === undefined // This must be the top parent element
 	? obj : obj[key];
 
@@ -26,7 +26,7 @@ function run_replacer ( obj, key, path, replacer ) {
 }
 
 // TODO: an option for width first instead of depth first?
-function walk ( parent, replacer, key, path ) {
+export function walk ( parent: any, replacer: any, key: any, path: any ) {
     if ( path === undefined )
 	path				= [];
 
@@ -82,26 +82,29 @@ function walk ( parent, replacer, key, path ) {
 
 // TODO: add method for gathering nodes as a list instead of using callback (eg Object.nodes)
 
+export function logging () {
+    debug				= true;
+}
 
-let base_exports = {
-    walk,
-    DELETE,
-    logging () {
-	debug				= true;
-    },
-};
 
-module.exports = {
-    bindNative() {
-	if ( Object.walk !== undefined )
+export function bindNative() {
+    if ( "walk" in Object )
 	    throw new Error(`Object.walk is already defined as type: ${typeof Object.walk}`);
 
-	Object.defineProperty(Object, "walk", {
+    Object.defineProperty(Object, "walk", {
 	    "value": walk,
 	    "writable": false,
 	});
 
-	return base_exports;
-    },
+    return base_exports;
+}
+
+let base_exports = {
+    walk,
+    DELETE,
+    logging,
+};
+
+export default {
     ...base_exports
 };
