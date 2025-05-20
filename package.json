@@ -13,7 +13,7 @@
     "lib/*.js.map"
   ],
   "scripts": {
-    "format": "prettier --write \"tests/**/*.ts\" \"src/**/*.ts\""
+    "format": "prettier --write \"tests/**/*.js\" \"src/**/*.ts\""
   },
   "author": "Matthew Brisebois <matthew@webheroes.ca>",
   "license": "ISC",
