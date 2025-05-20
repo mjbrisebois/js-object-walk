@@ -2,9 +2,9 @@
   "name": "@whi/object-walk",
   "version": "0.4.1",
   "description": "A method for traversing an object and optionally replacing values",
-  "main": "src/index.ts",
-  "module": "lib/index.js",
   "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "README.md",
     "src/*.ts",
